@@ -24,15 +24,12 @@ open class Panchaang: UIView {
     return calendar
   }()
   
-  
-  public lazy var jumper: MonthYearJumper = {
-    let jumper = MonthYearJumper(frame: bounds)
+  private lazy var jumper: MonthYearJumper = {
+    let jumper = MonthYearJumper(frame: bounds, calendar: calendar)
     jumper.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     jumper.isHidden = true
     jumper.jumperDelegate = self
     addSubview(jumper)
-    jumper.backgroundColor = calendar.backgroundColor
-    jumper.textColor = calendar.appearance.titleDefaultColor
     return jumper
   }()
 }
