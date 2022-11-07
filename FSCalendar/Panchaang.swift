@@ -11,7 +11,7 @@ import UIKit
 open class Panchaang: UIView {
   public lazy var calendar: FSCalendar = {
     let calendar = FSCalendar(frame: bounds)
-//    calendar.calendarHeaderView.collectionView.delegate = self
+    calendar.calendarHeaderView.collectionView.delegate = self
     calendar.translatesAutoresizingMaskIntoConstraints = false
     addSubview(calendar)
     applyConstraints(to: calendar)
@@ -32,7 +32,7 @@ open class Panchaang: UIView {
     collectionView.delegate = self
     return collectionView
   }()
-  
+      
   private func applyConstraints(to view: UIView) {
     NSLayoutConstraint.activate([
       view.topAnchor.constraint(equalTo: topAnchor),
@@ -54,5 +54,27 @@ extension Panchaang: UICollectionViewDataSource {
 }
 
 extension Panchaang: UICollectionViewDelegate {
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard scrollView == calendar.calendarHeaderView.collectionView else { return }
+    calendar.calendarHeaderView.scrollDidScroll(scrollView)
+  }
   
+  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    switch collectionView {
+      case calendar.calendarHeaderView.collectionView:
+        calendar.formatter.dateFormat = calendar.appearance.headerDateFormat
+        guard let cell = collectionView.cellForItem(at: indexPath) as? FSCalendarHeaderCell,
+              let rawDate = cell.titleLabel.text,
+              let date = calendar.formatter.date(from: rawDate)
+        else { return }
+        
+        if Calendar.current.isDate(date, equalTo: calendar.currentPage, toGranularity: .month) {
+          
+        } else {
+          calendar.setCurrentPage(date, animated: true)
+        }
+        
+      default: fatalError()
+    }
+  }
 }

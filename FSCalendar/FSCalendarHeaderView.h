@@ -23,6 +23,7 @@
 - (void)setScrollOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
 - (void)reloadData;
 - (void)configureAppearance;
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
 

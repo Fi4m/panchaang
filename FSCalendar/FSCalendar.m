@@ -60,8 +60,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) FSCalendarTransitionCoordinator *transitionCoordinator;
 @property (strong, nonatomic) FSCalendarCalculator       *calculator;
 
-@property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
-
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsRequestingBoundingDates;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
@@ -303,8 +301,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         self.calendarHeaderView.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
         self.calendarWeekdayView.frame = CGRectMake(0, self.calendarHeaderView.fs_bottom, self.contentView.fs_width, weekdayHeight);
 
-        _deliver.frame = CGRectMake(self.calendarHeaderView.fs_left, self.calendarHeaderView.fs_top, self.calendarHeaderView.fs_width, headerHeight+weekdayHeight);
-        _deliver.hidden = self.calendarHeaderView.hidden;
         if (!self.floatingMode) {
             switch (self.transitionCoordinator.representingScope) {
                 case FSCalendarScopeMonth: {
@@ -1295,25 +1291,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _calendarWeekdayView = calendarWeekdayView;
         }
         
-        if (_scrollEnabled) {
-            if (!_deliver) {
-                FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
-                deliver.header = _calendarHeaderView;
-                deliver.calendar = self;
-                [_contentView addSubview:deliver];
-                self.deliver = deliver;
-            }
-        } else if (_deliver) {
-            [_deliver removeFromSuperview];
-        }
-        
         _collectionView.pagingEnabled = YES;
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
     } else {
         
         [self.calendarHeaderView removeFromSuperview];
-        [self.deliver removeFromSuperview];
         [self.calendarWeekdayView removeFromSuperview];
         
         _collectionView.pagingEnabled = NO;
