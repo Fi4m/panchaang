@@ -21,6 +21,7 @@ class MonthYearJumperCell: UICollectionViewCell {
   }
   
   private func setup() {
+    titleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(titleLabel)
     NSLayoutConstraint.activate([

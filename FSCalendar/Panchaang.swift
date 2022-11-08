@@ -8,14 +8,10 @@
 
 import UIKit
 
+
+
 open class Panchaang: UIView {
-  
-  static var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMMM yyyy"
-    return formatter
-  }()
-  
+    
   public lazy var calendar: FSCalendar = {
     let calendar = FSCalendar(frame: bounds)
     calendar.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -42,13 +38,13 @@ extension Panchaang: UICollectionViewDelegate {
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let cell = collectionView.cellForItem(at: indexPath) as? FSCalendarHeaderCell,
           let rawDate = cell.titleLabel.text,
-          let date = Panchaang.dateFormatter.date(from: rawDate)
+          let date = DateFormatter.gMonth.date(from: rawDate)
     else { return }
     
     if Calendar.current.isDate(date, equalTo: calendar.currentPage, toGranularity: .month) {
       calendar.isHidden = true
       jumper.isHidden = false
-      jumper.reloadData()
+      jumper.reloadData(with: calendar.currentPage)
     } else {
       calendar.setCurrentPage(date, animated: true)
     }
